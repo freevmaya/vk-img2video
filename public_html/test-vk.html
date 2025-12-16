@@ -42,12 +42,7 @@
                     <p><strong>ID:</strong> ${user.id}</p>
                     ${user.photo_200 ? `<img src="${user.photo_200}" width="100" style="border-radius:50%;">` : ''}
                 `;
-                status.innerHTML += `<br><span class="success">✅ User: ${user.first_name} ${user.last_name}</span>`;
-                
-                // Тест 4: Дополнительные методы
-                const deviceInfo = await vkBridge.send('VKWebAppGetDeviceInfo', {});
-                status.innerHTML += `<br><span class="info">📱 Device: ${deviceInfo.device_model}</span>`;
-                
+                status.innerHTML += `<br><span class="success">✅ User: ${user.first_name} ${user.last_name}</span>`;                
             } catch (error) {
                 status.innerHTML += `<br><span class="error">❌ Error: ${error.message}</span>`;
             }
