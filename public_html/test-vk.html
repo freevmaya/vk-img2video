@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test VK Bridge</title>
+    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+</head>
+<body>
+    <h1>VK Bridge Test</h1>
+    <div id="status">Testing...</div>
+    
+    <script>
+        const status = document.getElementById('status');
+        
+        if (typeof vkBridge === 'undefined') {
+            status.innerHTML = '❌ VK Bridge NOT loaded';
+            status.style.color = 'red';
+        } else {
+            status.innerHTML = '✅ VK Bridge loaded';
+            status.style.color = 'green';
+            
+            // Пробуем инициализировать
+            vkBridge.send('VKWebAppInit')
+                .then(() => {
+                    status.innerHTML += '<br>✅ VKWebAppInit success';
+                    return vkBridge.send('VKWebAppGetUserInfo');
+                })
+                .then(user => {
+                    status.innerHTML += `<br>✅ User: ${user.first_name} ${user.last_name}`;
+                })
+                .catch(err => {
+                    status.innerHTML += `<br>❌ Error: ${err.message}`;
+                });
+        }
+    </script>
+</body>
+</html>
