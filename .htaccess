@@ -1,0 +1,29 @@
+RewriteEngine On
+
+# Перенаправление на HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Защита API
+<Files "api/*">
+    # Разрешаем только POST запросы к API
+    RewriteCond %{REQUEST_METHOD} !^(POST|OPTIONS)$
+    RewriteRule .* - [F]
+</Files>
+
+# Запрещаем доступ к конфигурационным файлам
+<FilesMatch "^(config|\.htaccess)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Запрещаем доступ к данным
+<FilesMatch "\.(json|log|sql)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Заголовки безопасности
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "DENY"
+Header set X-XSS-Protection "1; mode=block"
